@@ -1,0 +1,56 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+    provider = "prisma-client-js"
+    output   = "../generated/prisma"
+}
+
+datasource db {
+    provider  = "postgresql"
+    url       = env("DATABASE_URL")
+    directUrl = env("DIRECT_URL")
+}
+
+model Project {
+    id          Int      @id @default(autoincrement())
+    name        String
+    description String
+    image       String
+    techStack   String   // Stored as a comma-separated list or JSON string
+    liveUrl     String?
+    githubUrl   String?
+    category    String   // "web" | "system" | "other"
+    featured    Boolean  @default(false)
+    createdAt   DateTime @default(now())
+}
+
+model Experience {
+    id          Int      @id @default(autoincrement())
+    role        String
+    company     String
+    location    String?
+    startDate   String
+    endDate     String   // e.g. "Present" or date string
+    highlights  String   // Stored as JSON array string of bullet points
+    createdAt   DateTime @default(now())
+}
+
+model Achievement {
+    id          Int      @id @default(autoincrement())
+    title       String
+    issuer      String
+    date        String
+    category    String   // "academic" | "award" | "certificate" | "seminar"
+    description String?
+    createdAt   DateTime @default(now())
+}
+
+model ContactMessage {
+    id          Int      @id @default(autoincrement())
+    name        String
+    email       String
+    subject     String
+    message     String
+    createdAt   DateTime @default(now())
+}

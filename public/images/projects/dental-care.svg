@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 250" width="100%" height="100%">
+  <defs>
+    <linearGradient id="tealGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0d9488" />
+      <stop offset="100%" stop-color="#0ea5e9" />
+    </linearGradient>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#f8fafc" />
+      <stop offset="100%" stop-color="#e2e8f0" />
+    </linearGradient>
+  </defs>
+  <!-- Background -->
+  <rect width="400" height="250" rx="12" fill="url(#bgGrad)" />
+  
+  <!-- Content Grid Grid Lines -->
+  <path d="M 50 0 L 50 250 M 100 0 L 100 250 M 150 0 L 150 250 M 200 0 L 200 250 M 250 0 L 250 250 M 300 0 L 300 250 M 350 0 L 350 250" stroke="#cbd5e1" stroke-width="0.5" opacity="0.3" />
+  <path d="M 0 50 L 400 50 M 0 100 L 400 100 M 0 150 L 400 150 M 0 200 L 400 200" stroke="#cbd5e1" stroke-width="0.5" opacity="0.3" />
+
+  <!-- Big Central Tooth Graphic -->
+  <g transform="translate(70, 70)">
+    <!-- Shield / Heart glow background -->
+    <path d="M 0 30 C 0 -15 60 -15 60 30 C 60 70 30 90 30 110 C 30 90 0 70 0 30 Z" fill="url(#tealGrad)" opacity="0.15" transform="translate(10,-10) scale(1.2)" />
+    
+    <!-- Tooth shape -->
+    <path d="M 20 10 
+             C 10 10, 5 20, 5 35 
+             C 5 55, 12 70, 15 90 
+             C 17 98, 22 98, 25 90 
+             C 27 80, 30 65, 35 65 
+             C 40 65, 43 80, 45 90 
+             C 48 98, 53 98, 55 90 
+             C 58 70, 65 55, 65 35 
+             C 65 20, 60 10, 50 10 
+             C 42 10, 38 20, 35 20 
+             C 32 20, 28 10, 20 10 Z" 
+          fill="#ffffff" stroke="#0d9488" stroke-width="3" stroke-linejoin="round" />
+    <!-- Tooth Highlight -->
+    <path d="M 15 22 C 10 25, 10 35, 12 45" fill="none" stroke="#e0f2fe" stroke-width="2" stroke-linecap="round" />
+  </g>
+
+  <!-- Hospital Cross Indicator -->
+  <rect x="155" y="60" width="20" height="20" rx="4" fill="#0d9488" />
+  <path d="M 165 65 L 165 75 M 160 70 L 170 70" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" />
+
+  <!-- Scheduling Card -->
+  <rect x="200" y="50" width="130" height="65" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1.5" />
+  <rect x="212" y="62" width="60" height="6" rx="3" fill="#0d9488" />
+  <rect x="212" y="74" width="85" height="4" rx="2" fill="#94a3b8" />
+  <rect x="212" y="84" width="40" height="4" rx="2" fill="#cbd5e1" />
+  <circle cx="310" cy="80" r="10" fill="#ccfbf1" />
+  <!-- Small clock/checkmark inside card -->
+  <path d="M 307 80 L 309 82 L 314 77" stroke="#0d9488" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+
+  <!-- Patient Billing Card -->
+  <rect x="200" y="130" width="130" height="65" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1.5" />
+  <rect x="212" y="142" width="45" height="6" rx="3" fill="#0ea5e9" />
+  <rect x="212" y="154" width="75" height="4" rx="2" fill="#94a3b8" />
+  <rect x="212" y="164" width="90" height="4" rx="2" fill="#cbd5e1" />
+  <text x="310" y="172" font-family="sans-serif" font-weight="bold" font-size="10" fill="#0d9488" text-anchor="middle">$</text>
+</svg>

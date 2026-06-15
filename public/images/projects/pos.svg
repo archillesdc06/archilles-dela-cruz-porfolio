@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 250" width="100%" height="100%">
+  <defs>
+    <linearGradient id="orangeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3b82f6" />
+      <stop offset="100%" stop-color="#4f46e5" />
+    </linearGradient>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#f8fafc" />
+      <stop offset="100%" stop-color="#e2e8f0" />
+    </linearGradient>
+  </defs>
+  <!-- Background -->
+  <rect width="400" height="250" rx="12" fill="url(#bgGrad)" />
+  
+  <!-- Content Grid Grid Lines -->
+  <path d="M 50 0 L 50 250 M 100 0 L 100 250 M 150 0 L 150 250 M 200 0 L 200 250 M 250 0 L 250 250 M 300 0 L 300 250 M 350 0 L 350 250" stroke="#cbd5e1" stroke-width="0.5" opacity="0.3" />
+  <path d="M 0 50 L 400 50 M 0 100 L 400 100 M 0 150 L 400 150 M 0 200 L 400 200" stroke="#cbd5e1" stroke-width="0.5" opacity="0.3" />
+
+  <!-- Monitor Screen -->
+  <rect x="70" y="50" width="170" height="110" rx="8" fill="#1e293b" stroke="#0f172a" stroke-width="3" />
+  <!-- Stand -->
+  <path d="M 140 160 L 130 190 L 180 190 L 170 160 Z" fill="#475569" />
+  <rect x="110" y="190" width="90" height="8" rx="2" fill="#334155" />
+  
+  <!-- Content Inside Monitor -->
+  <!-- Header -->
+  <rect x="76" y="56" width="158" height="15" rx="3" fill="url(#orangeGrad)" />
+  <circle cx="85" cy="63.5" r="3" fill="#ffffff" />
+  <circle cx="95" cy="63.5" r="3" fill="#ffffff" opacity="0.7" />
+  
+  <!-- Sidebar -->
+  <rect x="76" y="76" width="45" height="78" rx="2" fill="#334155" />
+  <rect x="81" y="82" width="35" height="8" rx="1" fill="#475569" />
+  <rect x="81" y="94" width="35" height="8" rx="1" fill="#475569" />
+  <rect x="81" y="106" width="35" height="8" rx="1" fill="#475569" />
+
+  <!-- Items list on screen -->
+  <rect x="127" y="76" width="107" height="42" rx="2" fill="#ffffff" />
+  <line x1="132" y1="84" x2="162" y2="84" stroke="#cbd5e1" stroke-width="3" />
+  <line x1="210" y1="84" x2="228" y2="84" stroke="#2563eb" stroke-width="3" />
+  <line x1="132" y1="96" x2="182" y2="96" stroke="#cbd5e1" stroke-width="3" />
+  <line x1="215" y1="96" x2="228" y2="96" stroke="#2563eb" stroke-width="3" />
+
+  <!-- Numeric keypad on screen -->
+  <rect x="127" y="123" width="107" height="31" rx="2" fill="#ffffff" />
+  <circle cx="137" cy="131" r="4" fill="#cbd5e1" />
+  <circle cx="149" cy="131" r="4" fill="#cbd5e1" />
+  <circle cx="161" cy="131" r="4" fill="#cbd5e1" />
+  <circle cx="137" cy="143" r="4" fill="#cbd5e1" />
+  <circle cx="149" cy="143" r="4" fill="#cbd5e1" />
+  <circle cx="161" cy="143" r="4" fill="#cbd5e1" />
+  <rect x="175" y="127" width="52" height="23" rx="2" fill="#10b981" />
+  <path d="M 190 138 L 197 143 L 208 133" stroke="#ffffff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+
+  <!-- Paper Receipt coming from side -->
+  <g transform="translate(265, 45) rotate(5)">
+    <!-- Base Receipt -->
+    <path d="M 0 0 L 60 0 L 60 145 L 50 140 L 40 145 L 30 140 L 20 145 L 10 140 L 0 145 Z" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5" />
+    <!-- Barcode at top of receipt -->
+    <path d="M 12 15 L 12 30 M 16 15 L 16 30 M 22 15 L 22 30 M 26 15 L 26 30 M 30 15 L 30 30 M 36 15 L 36 30 M 40 15 L 40 30 M 44 15 L 44 30 M 48 15 L 48 30" stroke="#0f172a" stroke-width="1.5" />
+    <line x1="10" y1="45" x2="50" y2="45" stroke="#475569" stroke-width="2" />
+    <line x1="10" y1="60" x2="35" y2="60" stroke="#94a3b8" stroke-width="1.5" />
+    <line x1="10" y1="75" x2="40" y2="75" stroke="#94a3b8" stroke-width="1.5" />
+    <line x1="10" y1="90" x2="30" y2="90" stroke="#94a3b8" stroke-width="1.5" />
+    <circle cx="45" cy="115" r="8" fill="#2563eb" />
+    <text x="45" y="118" font-family="sans-serif" font-weight="bold" font-size="8" fill="#ffffff" text-anchor="middle">$</text>
+  </g>
+</svg>

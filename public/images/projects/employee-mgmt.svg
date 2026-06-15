@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 250" width="100%" height="100%">
+  <defs>
+    <linearGradient id="emeraldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3b82f6" />
+      <stop offset="100%" stop-color="#4f46e5" />
+    </linearGradient>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#f8fafc" />
+      <stop offset="100%" stop-color="#e2e8f0" />
+    </linearGradient>
+  </defs>
+  <!-- Background -->
+  <rect width="400" height="250" rx="12" fill="url(#bgGrad)" />
+  
+  <!-- Content Grid Grid Lines -->
+  <path d="M 50 0 L 50 250 M 100 0 L 100 250 M 150 0 L 150 250 M 200 0 L 200 250 M 250 0 L 250 250 M 300 0 L 300 250 M 350 0 L 350 250" stroke="#cbd5e1" stroke-width="0.5" opacity="0.3" />
+  <path d="M 0 50 L 400 50 M 0 100 L 400 100 M 0 150 L 400 150 M 0 200 L 400 200" stroke="#cbd5e1" stroke-width="0.5" opacity="0.3" />
+
+  <!-- Connector Lines -->
+  <path d="M 200 70 L 200 120 M 200 120 L 100 120 M 200 120 L 300 120 M 100 120 L 100 150 M 300 120 L 300 150" stroke="#64748b" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+
+  <!-- Node 1 (Manager/Top) -->
+  <g transform="translate(150, 30)">
+    <rect width="100" height="45" rx="8" fill="url(#emeraldGrad)" stroke="#2563eb" stroke-width="1.5" />
+    <circle cx="25" cy="22.5" r="12" fill="#ffffff" />
+    <!-- User Head -->
+    <circle cx="25" cy="18.5" r="4.5" fill="#4f46e5" />
+    <!-- User Body -->
+    <path d="M 18 29.5 A 7 7 0 0 1 32 29.5 Z" fill="#4f46e5" />
+    <rect x="47" y="14" width="40" height="6" rx="3" fill="#ffffff" />
+    <rect x="47" y="24" width="25" height="5" rx="2" fill="#ffffff" opacity="0.7" />
+  </g>
+
+  <!-- Node 2 (Employee Left) -->
+  <g transform="translate(50, 150)">
+    <rect width="100" height="45" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1.5" />
+    <circle cx="25" cy="22.5" r="12" fill="#cbd5e1" />
+    <circle cx="25" cy="18.5" r="4.5" fill="#475569" />
+    <path d="M 18 29.5 A 7 7 0 0 1 32 29.5 Z" fill="#475569" />
+    <rect x="47" y="14" width="40" height="6" rx="3" fill="#2563eb" />
+    <rect x="47" y="24" width="25" height="5" rx="2" fill="#94a3b8" />
+  </g>
+
+  <!-- Node 3 (Employee Right) -->
+  <g transform="translate(250, 150)">
+    <rect width="100" height="45" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1.5" />
+    <circle cx="25" cy="22.5" r="12" fill="#cbd5e1" />
+    <circle cx="25" cy="18.5" r="4.5" fill="#475569" />
+    <path d="M 18 29.5 A 7 7 0 0 1 32 29.5 Z" fill="#475569" />
+    <rect x="47" y="14" width="40" height="6" rx="3" fill="#2563eb" />
+    <rect x="47" y="24" width="25" height="5" rx="2" fill="#94a3b8" />
+  </g>
+
+  <!-- Status indicator for top node -->
+  <circle cx="245" cy="35" r="6" fill="#10b981" stroke="#ffffff" stroke-width="1.5" />
+</svg>
