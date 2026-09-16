@@ -13,23 +13,13 @@ async function main() {
   // Seed Projects
   const projects = [
     {
-      name: "Budget Tracker App",
-      description: "A cross-platform mobile app for tracking income, expenses, and savings goals in real time. Features an AI-powered budgeting assistant that analyzes user spending patterns and delivers personalized financial recommendations, integrated with a clean, intuitive dashboard and real-time data sync.",
-      image: "/images/projects/budget-tracker.svg",
-      techStack: "React Native, Expo, T3 Stack, AI Integration",
-      liveUrl: null,
-      githubUrl: "https://github.com/archillesdc-git",
-      category: "system",
-      featured: true,
-    },
-    {
-      name: "Galor Dental Clinic Management System",
-      description: "A full-featured web-based dental clinic management system handling patient records, appointment scheduling, treatment tracking, and billing. Designed a streamlined communication interface between dental staff and patients, reducing manual coordination overhead.",
-      image: "/images/projects/dental-care.svg",
-      techStack: "PHP, HTML, CSS, MySQL",
-      liveUrl: null,
-      githubUrl: "https://github.com/archillesdc-git",
-      category: "system",
+      name: "Entrance Exam UI Design Analysis (Research)",
+      description: "Co-authored and published academic research paper evaluating the impact of User Interface (UI) design on the usability and task efficiency of the digital entrance exam system at SEAIT. Published in the International Journal of Scientific and Applied Research (IJSAR, Vol. 4, No. 9).",
+      image: "/images/projects/teachers-eval.svg",
+      techStack: "UI/UX Design, Heuristic Evaluation, SUS Testing",
+      liveUrl: "https://doi.org/10.54756/IJSAR.2024.20",
+      githubUrl: null,
+      category: "research",
       featured: true,
     },
   ];

@@ -8,6 +8,10 @@ export interface Project {
   githubUrl: string | null;
   category: string;
   featured: boolean;
+  stars?: number;
+  language?: string;
+  lastUpdated?: string;
+  source?: "static" | "github";
 }
 
 export interface Experience {
@@ -30,29 +34,17 @@ export interface Achievement {
   link?: string;
 }
 
+export interface Certification {
+  id: string;
+  title: string;
+  issuer: string;
+  year: string;
+  description: string;
+  image: string;
+  driveUrl: string;
+}
+
 export const staticProjects: Project[] = [
-  {
-    id: 1,
-    name: "Budget Tracker App",
-    description: "A cross-platform mobile app for tracking income, expenses, and savings goals in real time. Features an AI-powered budgeting assistant that analyzes user spending patterns and delivers personalized financial recommendations, integrated with a clean, intuitive dashboard and real-time data sync.",
-    image: "/images/projects/budget-tracker.svg",
-    techStack: "React Native, Expo, T3 Stack, AI Integration",
-    liveUrl: null,
-    githubUrl: "https://github.com/archillesdc-git",
-    category: "system",
-    featured: true,
-  },
-  {
-    id: 2,
-    name: "Galor Dental Clinic Management System",
-    description: "A full-featured web-based dental clinic management system handling patient records, appointment scheduling, treatment tracking, and billing. Designed a streamlined communication interface between dental staff and patients, reducing manual coordination overhead.",
-    image: "/images/projects/dental-care.svg",
-    techStack: "PHP, HTML, CSS, MySQL",
-    liveUrl: null,
-    githubUrl: "https://github.com/archillesdc-git",
-    category: "system",
-    featured: true,
-  },
   {
     id: 3,
     name: "Entrance Exam UI Design Analysis (Research)",
@@ -63,6 +55,7 @@ export const staticProjects: Project[] = [
     githubUrl: null,
     category: "research",
     featured: true,
+    source: "static" as const,
   },
 ];
 

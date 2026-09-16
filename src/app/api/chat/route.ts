@@ -11,7 +11,7 @@ ABOUT ARCHILLES DELA CRUZ:
 - Location: General Santos City, Philippines
 - Email: archillesdelacruzemail@gmail.com
 - Phone: 0975 077 3561
-- GitHub: https://github.com/archillesdc-git
+- GitHub: https://github.com/archillesdc06
 - Facebook: https://facebook.com/archillesdc
 - JobStreet: https://ph.jobstreet.com/profiles/archilles-delacruz-c1fvrLpmB4
 - Resume/CV: https://drive.google.com/file/d/1P2_V0SEAAiAFUYLdcX4wmKENbdHYLLaB/view?usp=sharing
@@ -65,13 +65,13 @@ PROJECTS:
 1. Budget Tracker App
    - Description: Cross-platform mobile app for tracking income, expenses, and savings goals in real time with AI-powered budgeting assistant analyzing spending patterns and delivering personalized financial recommendations.
    - Tech Stack: React Native, Expo, T3 Stack, AI Integration
-   - GitHub: https://github.com/archillesdc-git
+   - GitHub: https://github.com/archillesdc06
    - Status: In development
 
 2. Galor Dental Clinic Management System
    - Description: Full-featured web-based dental clinic management system handling patient records, appointment scheduling, treatment tracking, and billing.
    - Tech Stack: PHP, HTML, CSS, MySQL
-   - GitHub: https://github.com/archillesdc-git
+   - GitHub: https://github.com/archillesdc06
    - Status: Completed
 
 CERTIFICATIONS & ACHIEVEMENTS:

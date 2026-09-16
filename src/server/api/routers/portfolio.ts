@@ -3,14 +3,32 @@ import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 import { env } from "~/env";
 import nodemailer from "nodemailer";
 import { staticProjects, staticExperiences, staticAchievements } from "~/data/portfolio-data";
+import { getGitHubProjects } from "~/server/github";
+import { getCertifications } from "~/server/drive";
+import type { Project } from "~/data/portfolio-data";
+
+async function getAllProjects(): Promise<Project[]> {
+  const githubProjects = await getGitHubProjects();
+
+  const staticNames = new Set(
+    staticProjects.map((p) => p.name.toLowerCase()),
+  );
+
+  const newGithubProjects = githubProjects.filter(
+    (gp) => !staticNames.has(gp.name.toLowerCase()),
+  );
+
+  return [...staticProjects, ...newGithubProjects];
+}
 
 export const portfolioRouter = createTRPCRouter({
-  getProjects: publicProcedure.query(() => {
-    return staticProjects;
+  getProjects: publicProcedure.query(async () => {
+    return getAllProjects();
   }),
 
-  getFeaturedProjects: publicProcedure.query(() => {
-    return staticProjects.filter((p) => p.featured);
+  getFeaturedProjects: publicProcedure.query(async () => {
+    const all = await getAllProjects();
+    return all.filter((p) => p.featured);
   }),
 
   getExperiences: publicProcedure.query(() => {
@@ -19,6 +37,10 @@ export const portfolioRouter = createTRPCRouter({
 
   getAchievements: publicProcedure.query(() => {
     return staticAchievements;
+  }),
+
+  getCertifications: publicProcedure.query(async () => {
+    return getCertifications();
   }),
 
   sendContactMessage: publicProcedure

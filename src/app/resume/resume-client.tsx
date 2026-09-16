@@ -115,8 +115,8 @@ export default function ResumeClient({ experiences, achievements }: ResumeClient
                 </div>
                 <div className="flex items-start space-x-2">
                   <Github className="h-3.5 w-3.5 text-slate-400 print:text-slate-600 mt-0.5 shrink-0" />
-                  <a href="https://github.com/archillesdc-git" target="_blank" rel="noopener noreferrer" className="hover:underline">
-                    github.com/archillesdc-git
+                  <a href="https://github.com/archillesdc06" target="_blank" rel="noopener noreferrer" className="hover:underline">
+                    github.com/archillesdc06
                   </a>
                 </div>
                 <div className="flex items-start space-x-2">

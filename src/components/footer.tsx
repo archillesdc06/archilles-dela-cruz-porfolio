@@ -9,7 +9,7 @@ export default function Footer() {
   const socialLinks = [
     {
       name: "GitHub",
-      href: "https://github.com/archillesdc-git",
+      href: "https://github.com/archillesdc06",
       icon: <Github className="h-5 w-5" />,
       color: "hover:text-slate-900 dark:hover:text-white",
     },
@@ -55,6 +55,9 @@ export default function Footer() {
             </Link>
             <Link href="/projects" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
               Projects
+            </Link>
+            <Link href="/certifications" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+              Certifications
             </Link>
             <Link href="/resume" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
               Resume

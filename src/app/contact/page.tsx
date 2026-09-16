@@ -40,7 +40,7 @@ const socials = [
   {
     name: "GitHub",
     icon: <Github className="h-5 w-5" />,
-    href: "https://github.com/archillesdc-git",
+    href: "https://github.com/archillesdc06",
     color: "bg-slate-800 hover:bg-slate-900",
   },
   {

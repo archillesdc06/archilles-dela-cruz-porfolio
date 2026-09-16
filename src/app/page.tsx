@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { api, HydrateClient } from "~/trpc/server";
 import TypingEffect from "~/components/typing-effect";
+import { Github } from "~/components/brand-icons";
 import { 
   FileDown, 
   Mail, 
@@ -12,7 +13,10 @@ import {
   Database, 
   Layers, 
   ChevronRight,
-  Sparkles
+  Sparkles,
+  Star,
+  GitBranch,
+  RefreshCw
 } from "lucide-react";
 
 const skillCategories = [
@@ -64,6 +68,7 @@ const skillCategories = [
 export default async function Home() {
   // Fetch featured projects from database using tRPC server-side caller
   const featuredProjects = await api.portfolio.getFeaturedProjects();
+  const certifications = await api.portfolio.getCertifications();
 
   return (
     <HydrateClient>
@@ -277,6 +282,10 @@ export default async function Home() {
                 <p className="text-slate-600 dark:text-slate-400 max-w-xl">
                   Take a look at the selected applications and management systems I developed.
                 </p>
+                <div className="inline-flex items-center space-x-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3 py-1 text-xs font-semibold text-emerald-600 dark:text-emerald-400">
+                  <RefreshCw className="h-3 w-3 animate-spin [animation-duration:4s]" />
+                  <span>Synced from GitHub</span>
+                </div>
               </div>
               <Link
                 href="/projects"
@@ -326,24 +335,61 @@ export default async function Home() {
                           </span>
                         ))}
                       </div>
+
+                      {/* GitHub Metadata */}
+                      {project.source === "github" && (
+                        <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-slate-500 dark:text-slate-400">
+                          {project.language && (
+                            <span className="inline-flex items-center space-x-1">
+                              <span className="h-2 w-2 rounded-full bg-blue-500" />
+                              <span>{project.language}</span>
+                            </span>
+                          )}
+                          {typeof project.stars === "number" && (
+                            <span className="inline-flex items-center space-x-1">
+                              <Star className="h-3 w-3" />
+                              <span>{project.stars}</span>
+                            </span>
+                          )}
+                          {project.lastUpdated && (
+                            <span className="inline-flex items-center space-x-1">
+                              <GitBranch className="h-3 w-3" />
+                              <span>{new Date(project.lastUpdated).toLocaleDateString()}</span>
+                            </span>
+                          )}
+                        </div>
+                      )}
                       
                       {/* Buttons */}
                       <div className="flex items-center justify-between border-t border-slate-100 dark:border-slate-800 pt-4 text-sm font-semibold">
-                        <Link 
-                          href="/projects" 
-                          className="text-blue-600 dark:text-blue-400 hover:underline inline-flex items-center space-x-1"
-                        >
-                          <span>Details</span>
-                          <ArrowRight className="h-3.5 w-3.5" />
-                        </Link>
+                        <div className="flex items-center space-x-3">
+                          <Link 
+                            href="/projects" 
+                            className="text-blue-600 dark:text-blue-400 hover:underline inline-flex items-center space-x-1"
+                          >
+                            <span>Details</span>
+                            <ArrowRight className="h-3.5 w-3.5" />
+                          </Link>
+                          {project.liveUrl && (
+                            <a 
+                              href={project.liveUrl} 
+                              target="_blank" 
+                              rel="noopener noreferrer" 
+                              className="text-emerald-600 dark:text-emerald-400 hover:underline"
+                            >
+                              Live Demo
+                            </a>
+                          )}
+                        </div>
                         {project.githubUrl && (
                           <a 
                             href={project.githubUrl} 
                             target="_blank" 
                             rel="noopener noreferrer" 
-                            className="text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white"
+                            className="text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white inline-flex items-center space-x-1.5"
                           >
-                            GitHub
+                            <Github className="h-4 w-4" />
+                            <span>GitHub</span>
                           </a>
                         )}
                       </div>
@@ -354,6 +400,84 @@ export default async function Home() {
             </div>
           </div>
         </section>
+
+        {/* CERTIFICATIONS SECTION */}
+        {certifications.length > 0 && (
+        <section id="certifications" className="py-20">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+              <div className="space-y-3">
+                <h2 className="text-3xl font-bold tracking-tight text-slate-950 dark:text-white sm:text-4xl">
+                  Certifications
+                </h2>
+                <div className="h-1.5 w-16 bg-blue-600 rounded-full" />
+                <p className="text-slate-600 dark:text-slate-400 max-w-xl">
+                  Trainings, certificates, and recognitions I have earned.
+                </p>
+              </div>
+              <Link
+                href="/certifications"
+                className="inline-flex items-center space-x-1.5 text-sm font-semibold text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 group"
+              >
+                <span>View All Certifications</span>
+                <ChevronRight className="h-4 w-4 group-hover:translate-x-0.5 transition-transform" />
+              </Link>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-12">
+              {certifications.slice(0, 6).map((cert) => (
+                <article key={cert.id} className="glass-panel flex flex-col h-full rounded-2xl overflow-hidden shadow-xs hover:shadow-md hover:scale-[1.01] transition-all duration-300 group">
+                  <a
+                    href={cert.driveUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="relative w-full aspect-video bg-slate-100 dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800"
+                  >
+                    <Image
+                      src={cert.image}
+                      alt={cert.title}
+                      fill
+                      className="object-cover"
+                    />
+                    {cert.year && (
+                      <span className="absolute bottom-3 right-3 rounded-full bg-blue-600/90 backdrop-blur-xs px-2.5 py-1 text-xs font-bold text-white shadow-xs">
+                        {cert.year}
+                      </span>
+                    )}
+                  </a>
+
+                  <div className="flex-1 p-6 space-y-4 flex flex-col justify-between">
+                    <div className="space-y-2">
+                      <h3 className="text-lg font-bold text-slate-950 dark:text-white leading-tight group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                        {cert.title}
+                      </h3>
+                      {cert.issuer && (
+                        <p className="text-sm font-semibold text-blue-600 dark:text-blue-400">
+                          {cert.issuer}
+                        </p>
+                      )}
+                      {cert.description && (
+                        <p className="text-sm text-slate-600 dark:text-slate-400 line-clamp-2">
+                          {cert.description}
+                        </p>
+                      )}
+                    </div>
+                    <a
+                      href={cert.driveUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center space-x-1.5 border-t border-slate-100 dark:border-slate-800 pt-4 text-sm font-semibold text-blue-600 dark:text-blue-400 hover:underline"
+                    >
+                      <span>Open in Drive</span>
+                      <ArrowRight className="h-3.5 w-3.5" />
+                    </a>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+        )}
 
         {/* CALL TO ACTION SECTION */}
         <section className="py-20 text-center relative overflow-hidden">
@@ -388,7 +512,7 @@ export default async function Home() {
               "jobTitle": ["Software Developer", "Web Developer", "IT Specialist"],
               "url": "https://archilles-dela-cruz-portfolio.vercel.app",
               "sameAs": [
-                "https://github.com/archillesdc-git",
+                "https://github.com/archillesdc06",
                 "https://facebook.com/archillesdc",
                 "https://ph.jobstreet.com/profiles/archilles-delacruz-c1fvrLpmB4"
               ],

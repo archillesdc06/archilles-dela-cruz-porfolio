@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import { ExternalLink, Sparkles } from "lucide-react";
+import { ExternalLink, Sparkles, Star, GitBranch } from "lucide-react";
 import { Github } from "~/components/brand-icons";
 
 interface Project {
@@ -16,6 +16,10 @@ interface Project {
   githubUrl: string | null;
   category: string;
   featured: boolean;
+  stars?: number;
+  language?: string;
+  lastUpdated?: string;
+  source?: "static" | "github";
 }
 
 interface ProjectsClientProps {
@@ -116,6 +120,30 @@ export default function ProjectsClient({ initialProjects }: ProjectsClientProps)
                       </span>
                     ))}
                   </div>
+
+                  {/* GitHub Metadata */}
+                  {project.source === "github" && (
+                    <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-slate-500 dark:text-slate-400">
+                      {project.language && (
+                        <span className="inline-flex items-center space-x-1">
+                          <span className="h-2 w-2 rounded-full bg-blue-500" />
+                          <span>{project.language}</span>
+                        </span>
+                      )}
+                      {typeof project.stars === "number" && (
+                        <span className="inline-flex items-center space-x-1">
+                          <Star className="h-3 w-3" />
+                          <span>{project.stars}</span>
+                        </span>
+                      )}
+                      {project.lastUpdated && (
+                        <span className="inline-flex items-center space-x-1">
+                          <GitBranch className="h-3 w-3" />
+                          <span>{new Date(project.lastUpdated).toLocaleDateString()}</span>
+                        </span>
+                      )}
+                    </div>
+                  )}
                   
                   {/* Actions */}
                   <div className="flex items-center justify-between border-t border-slate-100 dark:border-slate-800 pt-4 text-sm font-semibold">

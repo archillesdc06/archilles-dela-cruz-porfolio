@@ -15,6 +15,8 @@ export const env = createEnv({
     SMTP_PASSWORD: z.string().optional(),
     GROQ_API_KEY: z.string().optional(),
     DIRECT_URL: z.string().optional(),
+    GITHUB_USERNAME: z.string().optional(),
+    GOOGLE_DRIVE_FOLDER_ID: z.string().optional(),
   },
 
   /**
@@ -37,6 +39,8 @@ export const env = createEnv({
     SMTP_PASSWORD: process.env.SMTP_PASSWORD,
     GROQ_API_KEY: process.env.GROQ_API_KEY,
     DIRECT_URL: process.env.DIRECT_URL,
+    GITHUB_USERNAME: process.env.GITHUB_USERNAME,
+    GOOGLE_DRIVE_FOLDER_ID: process.env.GOOGLE_DRIVE_FOLDER_ID,
     // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
   },
   /**
