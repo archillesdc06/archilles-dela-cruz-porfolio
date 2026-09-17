@@ -3,6 +3,7 @@ export interface Project {
   name: string;
   description: string;
   image: string;
+  screenshots?: string[];
   techStack: string;
   liveUrl: string | null;
   githubUrl: string | null;

@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { api, HydrateClient } from "~/trpc/server";
 import TypingEffect from "~/components/typing-effect";
+import ProjectVisuals from "~/components/project-screenshots";
 import { Github } from "~/components/brand-icons";
 import { 
   FileDown, 
@@ -298,17 +299,12 @@ export default async function Home() {
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-12">
               {featuredProjects.map((project) => (
-                <article key={project.id} className="glass-panel flex flex-col h-full rounded-2xl overflow-hidden shadow-xs hover:shadow-md hover:scale-[1.01] transition-all duration-300 group">
-                  {/* Card Header Illustration */}
-                  <div className="relative w-full aspect-video bg-slate-100 dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800">
-                    <Image
-                      src={project.image}
-                      alt={project.name}
-                      fill
-                      className="object-cover"
-                    />
-                  </div>
-                  
+                <article key={project.id} className="glass-panel relative flex flex-col h-full rounded-2xl overflow-hidden shadow-xs hover:shadow-md hover:scale-[1.01] transition-all duration-300 group">
+                  <ProjectVisuals
+                    image={project.image}
+                    screenshots={project.screenshots}
+                    projectName={project.name}
+                  >
                   {/* Card Body */}
                   <div className="flex-1 p-6 space-y-4 flex flex-col justify-between">
                     <div className="space-y-2">
@@ -359,7 +355,7 @@ export default async function Home() {
                           )}
                         </div>
                       )}
-                      
+
                       {/* Buttons */}
                       <div className="flex items-center justify-between border-t border-slate-100 dark:border-slate-800 pt-4 text-sm font-semibold">
                         <div className="flex items-center space-x-3">
@@ -395,6 +391,7 @@ export default async function Home() {
                       </div>
                     </div>
                   </div>
+                  </ProjectVisuals>
                 </article>
               ))}
             </div>

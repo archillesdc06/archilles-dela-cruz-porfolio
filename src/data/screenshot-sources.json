@@ -1,0 +1,21 @@
+{
+  "settings": {
+    "username": "archillesdc06",
+    "excludeRepos": ["archilles-dela-cruz-porfolio"],
+    "viewportWidth": 1920,
+    "viewportHeight": 1080
+  },
+  "projects": {
+    "pharmacy-pos": {
+      "name": "MediCore POS — Pharmacy Point of Sale & Inventory System",
+      "description": "A premium pharmacy point-of-sale and inventory management system built for Philippine community pharmacies — VAT-aware checkout, batch & expiry tracking, purchase orders, audit logs, roles, and reports.",
+      "category": "system",
+      "featured": true,
+      "techStack": "Next.js 16, TypeScript, Tailwind CSS, shadcn/ui, Recharts",
+      "subdir": "medicore-pos",
+      "routes": ["/login", "/dashboard", "/pos", "/products", "/inventory", "/purchases", "/suppliers", "/customers", "/sales", "/reports", "/users", "/audit-logs", "/settings"],
+      "skipLogin": true,
+      "enabled": true
+    }
+  }
+}
