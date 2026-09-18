@@ -12,6 +12,7 @@ interface Project {
   description: string;
   image: string;
   screenshots?: string[];
+  fullScreenshots?: string[];
   techStack: string;
   liveUrl: string | null;
   githubUrl: string | null;
@@ -85,6 +86,7 @@ export default function ProjectsClient({ initialProjects }: ProjectsClientProps)
               <ProjectVisuals
                 image={project.image}
                 screenshots={project.screenshots}
+                fullScreenshots={project.fullScreenshots}
                 projectName={project.name}
               >
                 {/* Card Body */}

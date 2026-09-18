@@ -26,7 +26,15 @@ const METADATA_PATH = path.join(REPO_ROOT, "src", "data", "github-metadata.json"
 const SHOTS_DIR = path.join(REPO_ROOT, "public", "images", "projects");
 
 const PORT_RANGE = Array.from({ length: 11 }, (_, i) => 3000 + i);
-const DEFAULT_ROUTES = ["/", "/dashboard", "/login", "/products", "/inventory", "/pos", "/reports"];
+const DEFAULT_EXCLUDE = [
+  /\/api(\/|$)/i,
+  /log-?out/i,
+  /sign-?out/i,
+  /\/delete(\/|$)/i,
+  /\/remove(\/|$)/i,
+  /\/destroy(\/|$)/i,
+  /\.(pdf|zip|png|jpe?g|svg|gif|webp|mp4|csv|xlsx?|docx?|txt)$/i,
+];
 const COMMON_TECH = new Set([
   "next", "next-auth", "react", "react-dom", "vue", "vite", "express",
   "fastify", "svelte", "angular", "tailwindcss", "bootstrap", "jquery",
@@ -166,75 +174,204 @@ function devArgs(projectDir, port, scriptName) {
   return [];
 }
 
-async function runDevServer(projectDir, port) {
+async function runDevServer(projectDir, port, logFile) {
   const env = { ...process.env, PORT: String(port), HOST: "127.0.0.1" };
   const pm = detectPm(projectDir);
   const scriptName = pickDevScript(projectDir);
   const args = ["run", scriptName, "--", ...devArgs(projectDir, port, scriptName)];
+  const out = fs.openSync(logFile, "w");
   const proc = spawn(pm, args, {
     cwd: projectDir,
     env,
     shell: process.platform === "win32",
     detached: process.platform !== "win32",
-    stdio: "ignore",
+    stdio: ["ignore", out, out],
   });
   return proc;
 }
 
-async function discoverRoutes(baseUrl, configuredRoutes) {
-  const routes = [];
-  if (configuredRoutes && configuredRoutes.length > 0) {
-    return [...new Set(configuredRoutes)];
+function logTail(logFile, lines = 30) {
+  try {
+    return fs.readFileSync(logFile, "utf8").split(/\r?\n/).slice(-lines).join("\n");
+  } catch {
+    return "(no server log)";
   }
-  // Try sitemap.xml
+}
+
+function getDemoLogins() {
+  try {
+    return JSON.parse(process.env.DEMO_LOGINS ?? "{}");
+  } catch {
+    return {};
+  }
+}
+
+function routeSlug(route) {
+  const s = route
+    .replace(/^https?:\/\/[^/]+/i, "")
+    .replace(/^\/+/, "")
+    .replace(/[\/?&=.#]+/g, "-")
+    .replace(/-+/g, "-")
+    .replace(/^-|-$/g, "");
+  return s || "home";
+}
+
+function normalizeRoute(href, baseUrl) {
+  try {
+    const u = new URL(href, baseUrl);
+    if (u.origin !== new URL(baseUrl).origin) return null;
+    if (u.protocol !== "http:" && u.protocol !== "https:") return null;
+    let pathname = u.pathname;
+    if (pathname.length > 1 && pathname.endsWith("/")) pathname = pathname.slice(0, -1);
+    const q = u.search && u.search !== "?" ? u.search : "";
+    return pathname + q;
+  } catch {
+    return null;
+  }
+}
+
+function isExcluded(route, extraPatterns) {
+  return [...DEFAULT_EXCLUDE, ...extraPatterns].some((re) => re.test(route));
+}
+
+async function fetchSitemapRoutes(baseUrl) {
+  const routes = [];
   try {
     const res = await fetch(`${baseUrl}/sitemap.xml`, { signal: AbortSignal.timeout(8000) });
     if (res.ok) {
       const body = await res.text();
-      const locs = [...body.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
-      for (const loc of locs) {
-        try {
-          const u = new URL(loc);
-          if (u.origin === new URL(baseUrl).origin && !u.pathname.startsWith("/api")) {
-            routes.push(u.pathname + u.search);
-          }
-        } catch { /* ignore invalid */ }
+      for (const m of body.matchAll(/<loc>([^<]+)<\/loc>/g)) {
+        const r = normalizeRoute(m[1], baseUrl);
+        if (r) routes.push(r);
       }
     }
   } catch { /* no sitemap */ }
-  return routes.length > 0 ? [...new Set(routes)] : [...DEFAULT_ROUTES];
+  return [...new Set(routes)];
 }
 
-async function captureShots(baseUrl, routes, outputDir, prefix) {
-  const browser = await chromium.launch();
-  const page = await browser.newPage({ viewport: { width: 1920, height: 1080 } });
-  const shots = [];
+async function performLogin(page, baseUrl, login, repoName) {
+  const creds = getDemoLogins()[repoName];
+  if (!creds?.user || !creds?.pass) {
+    info("   login configured but no DEMO_LOGINS credentials — capturing unauthenticated");
+    return;
+  }
+  try {
+    const url = login.url?.startsWith("http") ? login.url : `${baseUrl}${login.url ?? "/login"}`;
+    await page.goto(url, { waitUntil: "load", timeout: 45000 });
+    await page.waitForTimeout(1200);
+    if (login.userSelector) await page.fill(login.userSelector, creds.user);
+    if (login.passSelector) await page.fill(login.passSelector, creds.pass);
+    if (login.submitSelector) await page.click(login.submitSelector);
+    await page.waitForTimeout(2500);
+    info(`   login attempted as ${creds.user}`);
+  } catch (e) {
+    info(`   login failed (${e.message.slice(0, 70)}) — continuing unauthenticated`);
+  }
+}
 
-  for (const route of routes) {
+/**
+ * Crawl every reachable internal page and capture it.
+ * Each page gets a viewport screenshot, plus a full-page screenshot
+ * for the first `fullPageMax` pages.
+ */
+async function crawlAndCapture(baseUrl, repoName, opts, config) {
+  const width = config?.settings?.viewportWidth ?? 1920;
+  const height = config?.settings?.viewportHeight ?? 1080;
+  const maxPages = opts?.maxPages ?? config?.settings?.maxPages ?? 30;
+  const fullPageMax = opts?.fullPageMax ?? config?.settings?.fullPageMax ?? 12;
+  const extraExclude = (opts?.excludeRoutes ?? []).map((p) => (p instanceof RegExp ? p : new RegExp(p, "i")));
+
+  const browser = await chromium.launch();
+  const context = await browser.newContext({ viewport: { width, height } });
+  const page = await context.newPage();
+
+  if (opts?.login?.url) {
+    await performLogin(page, baseUrl, opts.login, repoName);
+  }
+
+  const high = [];
+  const low = [];
+  const seen = new Set();
+
+  const seed = (route) => {
+    const key = route.replace(/\/+$/, "") || "/";
+    if (seen.has(key)) return;
+    seen.add(key);
+    low.push(route);
+  };
+
+  if (opts?.routes?.length) {
+    for (const r of opts.routes) seed(r);
+  } else {
+    seed("/");
+    for (const r of await fetchSitemapRoutes(baseUrl)) seed(r);
+  }
+
+  const viewShots = [];
+  const fullShots = [];
+  let captured = 0;
+
+  while ((high.length > 0 || low.length > 0) && captured < maxPages) {
+    const route = high.shift() ?? low.shift();
+    if (isExcluded(route, extraExclude)) {
+      info(`  skip ${route} (excluded)`);
+      continue;
+    }
     const url = route.startsWith("http") ? route : `${baseUrl}${route}`;
-    const name = route
-      .replace(/^\/+/, "")
-      .replace(/[\/?&=.#]+/g, "-")
-      .replace(/-+/g, "-")
-      .replace(/^-|-$/g, "") || "home";
-    const outFile = path.join(outputDir, `${prefix}-${name}.png`);
+    let resp;
     try {
-      const resp = await page.goto(url, { waitUntil: "load", timeout: 45000 });
-      if (resp && resp.status() >= 400) {
-        info(`  skip ${route} (HTTP ${resp.status()})`);
-        continue;
-      }
-      await page.waitForTimeout(1600);
-      await page.screenshot({ path: outFile });
-      shots.push(outFile);
-      info(`  captured ${route} -> ${path.basename(outFile)}`);
+      resp = await page.goto(url, { waitUntil: "load", timeout: 45000 });
     } catch (e) {
-      info(`  skip ${route} (${e.message.slice(0, 80)})`);
+      info(`  skip ${route} (${e.message.slice(0, 60)})`);
+      continue;
+    }
+    if (resp && resp.status() >= 400) {
+      info(`  skip ${route} (HTTP ${resp.status()})`);
+      continue;
+    }
+    await page.waitForTimeout(1500);
+
+    const slug = routeSlug(route);
+    const viewFile = path.join(SHOTS_DIR, `${repoName}-${slug}.png`);
+    await page.screenshot({ path: viewFile });
+    viewShots.push(viewFile);
+
+    let fullMade = false;
+    if (captured < fullPageMax) {
+      const fullFile = path.join(SHOTS_DIR, `${repoName}-${slug}-full.jpg`);
+      try {
+        await page.screenshot({ path: fullFile, fullPage: true, type: "jpeg", quality: 82 });
+        fullShots.push(fullFile);
+        fullMade = true;
+      } catch { /* skip full-page */ }
+    }
+
+    captured++;
+    info(`  captured ${route} -> ${path.basename(viewFile)}${fullMade ? " (+full)" : ""}`);
+
+    let links = [];
+    try {
+      links = await page.$$eval("a[href]", (anchors) =>
+        anchors.map((a) => ({
+          href: a.getAttribute("href"),
+          nav: !!a.closest("nav,aside,header,[role=navigation]"),
+        })),
+      );
+    } catch { /* ignore */ }
+
+    for (const { href, nav } of links) {
+      if (!href || href.startsWith("#") || /^(mailto:|tel:|javascript:)/i.test(href)) continue;
+      const r = normalizeRoute(href, baseUrl);
+      if (!r) continue;
+      const key = r.replace(/\/+$/, "") || "/";
+      if (seen.has(key)) continue;
+      seen.add(key);
+      (nav ? high : low).push(r);
     }
   }
 
   await browser.close();
-  return shots;
+  return { viewShots, fullShots };
 }
 
 async function buildMontage(shots, outputFile, title, subtitle) {
@@ -305,17 +442,20 @@ function escapeHtml(str) {
     .replaceAll("'", "&#39;");
 }
 
-async function buildMetadataEntry(repo, config, shots, heroFile, projectDir) {
+async function buildMetadataEntry(repo, config, viewShots, fullShots, heroFile, projectDir) {
   const projectConfig = config?.projects?.[repo.name];
   const name = projectConfig?.name ?? repo.name.split(/[-_]/).map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
   const category = projectConfig?.category ?? "web";
+  const autoFeatured = config?.settings?.autoFeatured ?? true;
+  const featured = projectConfig?.featured ?? (autoFeatured && viewShots.length > 0);
   return {
     name,
     description: projectConfig?.description ?? repo.description ?? "",
     image: `/images/projects/${heroFile}`,
-    screenshots: shots.map((s) => `/images/projects/${path.basename(s)}`),
+    screenshots: viewShots.map((s) => `/images/projects/${path.basename(s)}`),
+    fullScreenshots: fullShots.map((s) => `/images/projects/${path.basename(s)}`),
     category,
-    featured: projectConfig?.featured ?? false,
+    featured,
     techStack: projectConfig?.techStack ?? detectTechStack(projectDir),
     _auto: true,
     _repoPushedAt: repo.pushed_at ?? null,
@@ -354,7 +494,7 @@ function cleanOldShots(repoName) {
   const meta = loadMetadata();
   const entry = meta[repoName];
   if (!entry) return;
-  const oldFiles = [entry.image, ...(entry.screenshots ?? [])].filter(Boolean);
+  const oldFiles = [entry.image, ...(entry.screenshots ?? []), ...(entry.fullScreenshots ?? [])].filter(Boolean);
   let removed = 0;
   for (const rel of oldFiles) {
     const file = path.join(SHOTS_DIR, rel.split("/").pop());
@@ -406,21 +546,25 @@ async function processRepo(repo, config, forcedRepo, baseScratch) {
 
     const port = await findFreePort();
     const baseUrl = `http://127.0.0.1:${port}`;
+    const logFile = path.join(os.tmpdir(), `auto-screenshots-${repo.name}.log`);
     info(`   starting dev server on port ${port}...`);
-    proc = await runDevServer(projectDir, port);
-    const ready = await waitForServer(baseUrl);
+    proc = await runDevServer(projectDir, port, logFile);
+    const ready = await waitForServer(baseUrl, 300000);
     if (!ready) {
-      info(`!! ${repo.name}: dev server did not become ready. Skipping.`);
+      info(`!! ${repo.name}: dev server did not become ready. Last server output:`);
+      info(logTail(logFile, 30));
       return { skipped: true, reason: "server-not-ready" };
     }
     info(`   server ready at ${baseUrl}`);
 
-    const routes = await discoverRoutes(baseUrl, projectConfig?.routes);
-    info(`   routes to capture (${routes.length}): ${routes.join(", ")}`);
+    const routesInfo = projectConfig?.routes?.length
+      ? `config routes (${projectConfig.routes.length})`
+      : "auto-crawl";
+    info(`   capturing pages (${routesInfo})...`);
 
-    const shots = await captureShots(baseUrl, routes, SHOTS_DIR, repo.name);
+    const { viewShots, fullShots } = await crawlAndCapture(baseUrl, repo.name, projectConfig ?? {}, config);
 
-    if (shots.length === 0) {
+    if (viewShots.length === 0) {
       info(`!! ${repo.name}: no valid screenshots captured.`);
       return { skipped: true, reason: "no-shots" };
     }
@@ -429,15 +573,15 @@ async function processRepo(repo, config, forcedRepo, baseScratch) {
     const description = projectConfig?.description ?? repo.description ?? "";
 
     const heroFile = `${repo.name}-hero.png`;
-    await buildMontage(shots, path.join(SHOTS_DIR, heroFile), title, description);
+    await buildMontage(viewShots, path.join(SHOTS_DIR, heroFile), title, description);
     info(`   hero banner -> ${heroFile}`);
 
     const meta = loadMetadata();
-    meta[repo.name] = await buildMetadataEntry(repo, config, shots, heroFile, projectDir);
+    meta[repo.name] = await buildMetadataEntry(repo, config, viewShots, fullShots, heroFile, projectDir);
     saveMetadata(meta);
-    info(`   metadata updated for ${repo.name}`);
+    info(`   metadata updated for ${repo.name} (featured: ${meta[repo.name].featured}, view: ${viewShots.length}, full: ${fullShots.length})`);
 
-    return { skipped: false, shots: shots.length + 1 };
+    return { skipped: false, shots: viewShots.length + fullShots.length + 1 };
   } finally {
     killProcessTree(proc);
     fs.rmSync(scratch, { recursive: true, force: true });

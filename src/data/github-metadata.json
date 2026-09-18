@@ -4,25 +4,44 @@
     "description": "A premium pharmacy point-of-sale and inventory management system built for Philippine community pharmacies — VAT-aware checkout, batch & expiry tracking, purchase orders, audit logs, roles, and reports.",
     "image": "/images/projects/pharmacy-pos-hero.png",
     "screenshots": [
-      "/images/projects/pharmacy-pos-login.png",
+      "/images/projects/pharmacy-pos-home.png",
       "/images/projects/pharmacy-pos-dashboard.png",
       "/images/projects/pharmacy-pos-pos.png",
+      "/images/projects/pharmacy-pos-sales.png",
       "/images/projects/pharmacy-pos-products.png",
       "/images/projects/pharmacy-pos-inventory.png",
       "/images/projects/pharmacy-pos-purchases.png",
       "/images/projects/pharmacy-pos-suppliers.png",
       "/images/projects/pharmacy-pos-customers.png",
-      "/images/projects/pharmacy-pos-sales.png",
       "/images/projects/pharmacy-pos-reports.png",
       "/images/projects/pharmacy-pos-users.png",
       "/images/projects/pharmacy-pos-audit-logs.png",
-      "/images/projects/pharmacy-pos-settings.png"
+      "/images/projects/pharmacy-pos-settings.png",
+      "/images/projects/pharmacy-pos-purchases-po_1.png",
+      "/images/projects/pharmacy-pos-purchases-po_4.png",
+      "/images/projects/pharmacy-pos-purchases-po_5.png",
+      "/images/projects/pharmacy-pos-purchases-po_6.png",
+      "/images/projects/pharmacy-pos-purchases-po_7.png"
+    ],
+    "fullScreenshots": [
+      "/images/projects/pharmacy-pos-home-full.jpg",
+      "/images/projects/pharmacy-pos-dashboard-full.jpg",
+      "/images/projects/pharmacy-pos-pos-full.jpg",
+      "/images/projects/pharmacy-pos-sales-full.jpg",
+      "/images/projects/pharmacy-pos-products-full.jpg",
+      "/images/projects/pharmacy-pos-inventory-full.jpg",
+      "/images/projects/pharmacy-pos-purchases-full.jpg",
+      "/images/projects/pharmacy-pos-suppliers-full.jpg",
+      "/images/projects/pharmacy-pos-customers-full.jpg",
+      "/images/projects/pharmacy-pos-reports-full.jpg",
+      "/images/projects/pharmacy-pos-users-full.jpg",
+      "/images/projects/pharmacy-pos-audit-logs-full.jpg"
     ],
     "category": "system",
     "featured": true,
     "techStack": "Next.js 16, TypeScript, Tailwind CSS, shadcn/ui, Recharts",
     "_auto": true,
     "_repoPushedAt": "2026-09-16T09:41:23Z",
-    "_processed": "2026-09-17T09:46:20.106Z"
+    "_processed": "2026-09-18T01:41:44.163Z"
   }
 }

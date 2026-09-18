@@ -40,6 +40,8 @@ jobs:
       - name: Run auto screenshot pipeline
         env:
           GITHUB_USERNAME: archillesdc06
+          # Optional JSON secret: {"repo-name":{"user":"...","pass":"..."}}
+          DEMO_LOGINS: ${{ secrets.DEMO_LOGINS }}
         run: node scripts/auto-screenshots.mjs
 
       - name: Commit screenshots

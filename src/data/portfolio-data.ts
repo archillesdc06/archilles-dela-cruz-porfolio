@@ -4,6 +4,7 @@ export interface Project {
   description: string;
   image: string;
   screenshots?: string[];
+  fullScreenshots?: string[];
   techStack: string;
   liveUrl: string | null;
   githubUrl: string | null;

@@ -3,7 +3,10 @@
     "username": "archillesdc06",
     "excludeRepos": ["archilles-dela-cruz-porfolio"],
     "viewportWidth": 1920,
-    "viewportHeight": 1080
+    "viewportHeight": 1080,
+    "autoFeatured": true,
+    "maxPages": 30,
+    "fullPageMax": 12
   },
   "projects": {
     "pharmacy-pos": {
@@ -13,7 +16,6 @@
       "featured": true,
       "techStack": "Next.js 16, TypeScript, Tailwind CSS, shadcn/ui, Recharts",
       "subdir": "medicore-pos",
-      "routes": ["/login", "/dashboard", "/pos", "/products", "/inventory", "/purchases", "/suppliers", "/customers", "/sales", "/reports", "/users", "/audit-logs", "/settings"],
       "skipLogin": true,
       "enabled": true
     }

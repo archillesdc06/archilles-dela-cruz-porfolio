@@ -9,6 +9,7 @@ import {
   ChevronLeft,
   ChevronRight,
   MonitorPlay,
+  ScrollText,
   ZoomIn,
   ZoomOut,
 } from "lucide-react";
@@ -16,6 +17,7 @@ import {
 interface ProjectVisualsProps {
   image: string;
   screenshots?: string[];
+  fullScreenshots?: string[];
   projectName: string;
   children: React.ReactNode;
 }
@@ -23,24 +25,25 @@ interface ProjectVisualsProps {
 export default function ProjectVisuals({
   image,
   screenshots = [],
+  fullScreenshots = [],
   projectName,
   children,
 }: ProjectVisualsProps) {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   const [zoomed, setZoomed] = useState(false);
 
-  const visible = screenshots.length > 0;
-  const total = visible ? screenshots.length + 1 : 1;
+  const visible = screenshots.length + fullScreenshots.length > 0;
+  const viewers = [image, ...screenshots, ...fullScreenshots];
+  const total = viewers.length;
 
-  const imageSrc: string =
-    openIndex !== null && visible && openIndex > 0
-      ? screenshots[openIndex - 1] ?? image
-      : image;
+  const imageSrc = openIndex !== null ? viewers[openIndex] ?? image : image;
 
   const currentLabel =
-    openIndex !== null && visible && openIndex > 0
-      ? `${projectName} screenshot ${openIndex}`
-      : `View of ${projectName}`;
+    openIndex === null || openIndex === 0
+      ? `View of ${projectName}`
+      : openIndex <= screenshots.length
+        ? `${projectName} screenshot ${openIndex}`
+        : `${projectName} full page ${openIndex - screenshots.length}`;
 
   const openImage = (index: number) => {
     const clamped = (index + total) % total;
@@ -76,7 +79,7 @@ export default function ProjectVisuals({
 
       {children}
 
-      {visible && (
+      {screenshots.length > 0 && (
         <div className="p-6 pt-0 space-y-3">
           <div className="flex items-center gap-1.5 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
             <MonitorPlay className="h-3.5 w-3.5" />
@@ -97,6 +100,35 @@ export default function ProjectVisuals({
                   alt={`${projectName} screenshot ${i + 1}`}
                   fill
                   className="object-cover transition-transform duration-300 group-hover:scale-105"
+                />
+                <span className="absolute inset-0 bg-slate-950/0 group-hover:bg-slate-950/20 transition-colors" />
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {fullScreenshots.length > 0 && (
+        <div className="p-6 pt-0 space-y-3">
+          <div className="flex items-center gap-1.5 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+            <ScrollText className="h-3.5 w-3.5" />
+            <span>Full Page Design</span>
+          </div>
+
+          <div className="flex gap-2 overflow-x-auto pb-1">
+            {fullScreenshots.map((src, i) => (
+              <button
+                key={src}
+                type="button"
+                onClick={() => setOpenIndex(screenshots.length + i + 1)}
+                className="group relative h-64 w-40 flex-none overflow-hidden rounded-lg border border-slate-200 dark:border-slate-800 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-blue-600"
+                aria-label={`View full page ${i + 1} of ${projectName}`}
+              >
+                <Image
+                  src={src}
+                  alt={`${projectName} full page ${i + 1}`}
+                  fill
+                  className="object-cover object-top transition-transform duration-300 group-hover:scale-105"
                 />
                 <span className="absolute inset-0 bg-slate-950/0 group-hover:bg-slate-950/20 transition-colors" />
               </button>
@@ -133,7 +165,7 @@ export default function ProjectVisuals({
                     e.stopPropagation();
                     openImage(openIndex - 1);
                   }}
-                  className="absolute left-3 sm:left-6 top-1/2 -translate-y-1/2 flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/25 transition-colors"
+                  className="absolute left-3 sm:left-6 top-1/2 -translate-y-1/2 flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/25 transition-colors z-10"
                   aria-label="Previous"
                 >
                   <ChevronLeft className="h-6 w-6" />
@@ -145,7 +177,7 @@ export default function ProjectVisuals({
                     e.stopPropagation();
                     openImage(openIndex + 1);
                   }}
-                  className="absolute right-3 sm:right-6 top-1/2 -translate-y-1/2 flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/25 transition-colors"
+                  className="absolute right-3 sm:right-6 top-1/2 -translate-y-1/2 flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/25 transition-colors z-10"
                   aria-label="Next"
                 >
                   <ChevronRight className="h-6 w-6" />
@@ -154,7 +186,7 @@ export default function ProjectVisuals({
             )}
 
             <div
-              className="relative"
+              className={`relative ${zoomed ? "max-h-[85vh] max-w-[92vw] overflow-auto" : ""}`}
               onClick={(e) => e.stopPropagation()}
             >
               <motion.div

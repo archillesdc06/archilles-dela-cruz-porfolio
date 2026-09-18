@@ -10,6 +10,7 @@ interface RepoEnrichment {
   description?: string;
   image?: string;
   screenshots?: string[];
+  fullScreenshots?: string[];
   category?: string;
   featured?: boolean;
   techStack?: string;
@@ -73,6 +74,7 @@ function repoToProject(repo: GitHubRepo): Project {
   const image = enrichment?.image ?? topicMeta.image ?? "/images/projects/budget-tracker.svg";
 
   const screenshots = enrichment?.screenshots;
+  const fullScreenshots = enrichment?.fullScreenshots;
 
   const category = enrichment?.category ?? topicMeta.category ?? "web";
 
@@ -90,6 +92,7 @@ function repoToProject(repo: GitHubRepo): Project {
     description,
     image,
     screenshots,
+    fullScreenshots,
     techStack,
     liveUrl,
     githubUrl: repo.html_url,

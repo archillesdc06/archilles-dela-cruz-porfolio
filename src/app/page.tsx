@@ -68,7 +68,14 @@ const skillCategories = [
 
 export default async function Home() {
   // Fetch featured projects from database using tRPC server-side caller
-  const featuredProjects = await api.portfolio.getFeaturedProjects();
+  const featuredProjects = (await api.portfolio.getFeaturedProjects())
+    .slice()
+    .sort(
+      (a, b) =>
+        new Date(b.lastUpdated ?? 0).getTime() -
+        new Date(a.lastUpdated ?? 0).getTime(),
+    )
+    .slice(0, 6);
   const certifications = await api.portfolio.getCertifications();
 
   return (
@@ -303,6 +310,7 @@ export default async function Home() {
                   <ProjectVisuals
                     image={project.image}
                     screenshots={project.screenshots}
+                    fullScreenshots={project.fullScreenshots}
                     projectName={project.name}
                   >
                   {/* Card Body */}
