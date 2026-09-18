@@ -16,6 +16,23 @@ jobs:
   capture:
     runs-on: ubuntu-latest
     timeout-minutes: 45
+    services:
+      mysql:
+        image: mysql:8
+        env:
+          MYSQL_DATABASE: pams_db
+          MYSQL_USER: pams
+          MYSQL_PASSWORD: pams_pass
+          MYSQL_ROOT_PASSWORD: root
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h 127.0.0.1 --silent"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=10
+    env:
+      DEMO_PASS: Pams@2026admin
     steps:
       - name: Checkout portfolio
         uses: actions/checkout@v4
@@ -31,17 +48,38 @@ jobs:
       - name: Enable corepack (pnpm/yarn support)
         run: corepack enable
 
+      - name: Install PHP + MySQL client
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y php-cli php-mysql php-mbstring php-xml default-mysql-client
+
       - name: Install dependencies
         run: npm install --no-audit --no-fund
 
       - name: Install Chromium for Playwright
         run: npx playwright install --with-deps chromium
 
+      - name: Seed obo-pams database
+        run: |
+          MYSQL_PWD=pams_pass mysql -h127.0.0.1 -upams pams_db < sql/schema.sql
+          for f in sql/*.sql; do
+            [ "$f" = "sql/schema.sql" ] && continue
+            MYSQL_PWD=pams_pass mysql -h127.0.0.1 -upams pams_db < "$f"
+          done
+          MYSQL_PWD=pams_pass mysql -h127.0.0.1 -upams pams_db < scripts/seed-obo-pams.sql
+          HASH="$(php -r 'echo password_hash(getenv("DEMO_PASS"), PASSWORD_BCRYPT);')"
+          printf "UPDATE users SET password_hash='%s', is_active=1, is_admin=1, role='developer' WHERE username='archillesdc_';\n" "$HASH" \
+            | MYSQL_PWD=pams_pass mysql -h127.0.0.1 -upams pams_db
+
       - name: Run auto screenshot pipeline
         env:
           GITHUB_USERNAME: archillesdc06
-          # Optional JSON secret: {"repo-name":{"user":"...","pass":"..."}}
-          DEMO_LOGINS: ${{ secrets.DEMO_LOGINS }}
+          DB_HOST: 127.0.0.1
+          DB_PORT: "3306"
+          DB_NAME: pams_db
+          DB_USER: pams
+          DB_PASS: pams_pass
+          DEMO_LOGINS: '{"obo-pams":{"user":"archillesdc_","pass":"${{ env.DEMO_PASS }}"}}'
         run: node scripts/auto-screenshots.mjs
 
       - name: Commit screenshots

@@ -16,7 +16,7 @@ import fs from "node:fs";
 import path from "node:path";
 import os from "node:os";
 import net from "node:net";
-import { execSync, spawn } from "node:child_process";
+import { execSync, spawn, spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -85,8 +85,14 @@ async function listRepos(username) {
   return repos.filter((r) => !r.fork && !r.archived);
 }
 
+function isPhpProject(dir) {
+  return fs.existsSync(path.join(dir, "index.php")) &&
+    !fs.existsSync(path.join(dir, "package.json"));
+}
+
 function pickProjectRoot(cloneDir, subdir) {
   if (subdir) return path.join(cloneDir, subdir);
+  if (isPhpProject(cloneDir)) return cloneDir;
   if (fs.existsSync(path.join(cloneDir, "package.json"))) return cloneDir;
   const candidates = fs.readdirSync(cloneDir, { withFileTypes: true })
     .filter((d) => d.isDirectory())
@@ -120,6 +126,14 @@ async function waitForServer(url, timeoutMs = 180000) {
     await new Promise((r) => setTimeout(r, 2000));
   }
   return false;
+}
+
+function binaryAvailable(cmd, args = ["--version"]) {
+  try {
+    return spawnSync(cmd, args, { stdio: "ignore" }).status === 0;
+  } catch {
+    return false;
+  }
 }
 
 function killProcessTree(proc) {
@@ -174,19 +188,32 @@ function devArgs(projectDir, port, scriptName) {
   return [];
 }
 
-async function runDevServer(projectDir, port, logFile) {
-  const env = { ...process.env, PORT: String(port), HOST: "127.0.0.1" };
-  const pm = detectPm(projectDir);
-  const scriptName = pickDevScript(projectDir);
-  const args = ["run", scriptName, "--", ...devArgs(projectDir, port, scriptName)];
+async function runDevServer(projectDir, port, logFile, isPhp = false) {
   const out = fs.openSync(logFile, "w");
-  const proc = spawn(pm, args, {
-    cwd: projectDir,
-    env,
-    shell: process.platform === "win32",
-    detached: process.platform !== "win32",
-    stdio: ["ignore", out, out],
-  });
+  let proc;
+  if (isPhp) {
+    const env = { ...process.env, PHP_CLI_SERVER_WORKERS: process.env.PHP_CLI_SERVER_WORKERS ?? "4" };
+    proc = spawn("php", ["-S", `127.0.0.1:${port}`], {
+      cwd: projectDir,
+      env,
+      shell: process.platform === "win32",
+      detached: process.platform !== "win32",
+      stdio: ["ignore", out, out],
+    });
+  } else {
+    const env = { ...process.env, PORT: String(port), HOST: "127.0.0.1" };
+    const pm = detectPm(projectDir);
+    const scriptName = pickDevScript(projectDir);
+    const args = ["run", scriptName, "--", ...devArgs(projectDir, port, scriptName)];
+    proc = spawn(pm, args, {
+      cwd: projectDir,
+      env,
+      shell: process.platform === "win32",
+      detached: process.platform !== "win32",
+      stdio: ["ignore", out, out],
+    });
+  }
+  proc.on("error", (e) => info(`   server binary failed to start (${e.message.slice(0, 80)})`));
   return proc;
 }
 
@@ -465,7 +492,10 @@ async function buildMetadataEntry(repo, config, viewShots, fullShots, heroFile, 
 
 function detectTechStack(projectDir) {
   const pkgPath = path.join(projectDir, "package.json");
-  if (!fs.existsSync(pkgPath)) return "Web";
+  if (!fs.existsSync(pkgPath)) {
+    if (fs.existsSync(path.join(projectDir, "index.php"))) return "PHP, MySQL, JavaScript, Custom CSS";
+    return "Web";
+  }
   try {
     const pkg = JSON.parse(fs.readFileSync(pkgPath, "utf8"));
     const deps = { ...(pkg.dependencies ?? {}), ...(pkg.devDependencies ?? {}) };
@@ -532,23 +562,32 @@ async function processRepo(repo, config, forcedRepo, baseScratch) {
 
     const projectDir = pickProjectRoot(scratch, projectConfig?.subdir);
     if (!projectDir) {
-      info(`!! ${repo.name}: no package.json found — likely PHP/MySQL or static. Skipping (manual fallback).`);
-      return { skipped: true, reason: "no-node-app" };
+      info(`!! ${repo.name}: no web app entry point found (package.json or index.php) — skipping (manual fallback).`);
+      return { skipped: true, reason: "no-web-app" };
     }
 
-    info(`   installing deps in ${path.basename(projectDir)} (${detectPm(projectDir)} install)...`);
-    execSync(installCmd(detectPm(projectDir)), {
-      cwd: projectDir,
-      stdio: ["ignore", "ignore", "inherit"],
-      env: { ...process.env, CI: "true" },
-      timeout: 420000,
-    });
+    const isPhp = isPhpProject(projectDir);
+    if (isPhp) {
+      info(`   detected PHP app — skipping npm install (server: php -S)`);
+      if (!binaryAvailable("php", ["-v"])) {
+        info(`!! ${repo.name}: PHP binary not found on the runner — skipping (manual fallback).`);
+        return { skipped: true, reason: "php-missing" };
+      }
+    } else {
+      info(`   installing deps in ${path.basename(projectDir)} (${detectPm(projectDir)} install)...`);
+      execSync(installCmd(detectPm(projectDir)), {
+        cwd: projectDir,
+        stdio: ["ignore", "ignore", "inherit"],
+        env: { ...process.env, CI: "true" },
+        timeout: 420000,
+      });
+    }
 
     const port = await findFreePort();
     const baseUrl = `http://127.0.0.1:${port}`;
     const logFile = path.join(os.tmpdir(), `auto-screenshots-${repo.name}.log`);
-    info(`   starting dev server on port ${port}...`);
-    proc = await runDevServer(projectDir, port, logFile);
+    info(`   starting server on port ${port} (${isPhp ? "PHP" : "node"})...`);
+    proc = await runDevServer(projectDir, port, logFile, isPhp);
     const ready = await waitForServer(baseUrl, 300000);
     if (!ready) {
       info(`!! ${repo.name}: dev server did not become ready. Last server output:`);

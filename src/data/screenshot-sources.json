@@ -18,6 +18,46 @@
       "subdir": "medicore-pos",
       "skipLogin": true,
       "enabled": true
+    },
+    "obo-pams": {
+      "name": "OBO-PAMS — Permit Application Management System",
+      "description": "A role-based permit application management system for the Office of the Building Official (LGU-General Santos) — order of payment encoding, permit workflow tracking, approval, releasing records, on-site ocular inspection checklists, team leaders, reports, and audit logs.",
+      "category": "system",
+      "featured": true,
+      "techStack": "PHP 8, MySQL, JavaScript, Custom CSS",
+      "enabled": true,
+      "login": {
+        "url": "/index.php",
+        "userSelector": "#username",
+        "passSelector": "#password",
+        "submitSelector": "#loginBtn"
+      },
+      "routes": [
+        "/pages/dashboard.php",
+        "/pages/activity-logs.php",
+        "/pages/reports.php",
+        "/pages/user-management.php",
+        "/pages/module-access.php",
+        "/pages/modules.php",
+        "/pages/settings.php",
+        "/pages/profile.php",
+        "/pages/notifications.php",
+        "/pages/user/order-of-payment.php",
+        "/pages/user/op-records.php",
+        "/pages/user/permit-workflow.php",
+        "/pages/user/workflow-details.php",
+        "/pages/user/permit-approval-encoding.php",
+        "/pages/user/permit-approval-records.php",
+        "/pages/user/releasing.php",
+        "/pages/user/releasing-records.php",
+        "/pages/user/inspection-checklist.php",
+        "/pages/user/inspection-reports.php",
+        "/pages/user/inspection-review.php",
+        "/pages/user/team-leaders.php",
+        "/pages/user/announcements.php"
+      ],
+      "maxPages": 40,
+      "fullPageMax": 14
     }
   }
 }
