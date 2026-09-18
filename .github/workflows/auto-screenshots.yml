@@ -2,7 +2,7 @@ name: Auto Screenshots
 
 on:
   schedule:
-    - cron: "0 3 * * *"
+    - cron: "0 */2 * * *"
   workflow_dispatch:
 
 permissions:
@@ -10,7 +10,7 @@ permissions:
 
 concurrency:
   group: auto-screenshots
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   capture:
@@ -88,7 +88,7 @@ jobs:
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
             git add public/images/projects src/data/github-metadata.json src/data/screenshot-sources.json
-            git commit -m "chore: auto-update project screenshots [skip ci]"
+            git commit -m "chore: auto-update project screenshots"
             git push
           else
             echo "No changes to commit."
