@@ -42,7 +42,7 @@ export default function ResumeClient({ experiences, achievements }: ResumeClient
           className="flex items-center space-x-2 rounded-xl bg-blue-600 px-6 py-3 text-sm font-semibold text-white shadow-md hover:bg-blue-700 hover:shadow-lg transition-all duration-200 cursor-pointer"
         >
           <Download className="h-4 w-4" />
-          <span>Download Resume PDF</span>
+          <span>Print to PDF</span>
         </a>
 
         <a

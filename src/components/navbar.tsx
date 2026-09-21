@@ -95,7 +95,7 @@ export default function Navbar() {
 
             {/* Resume Call To Action */}
             <a
-              href="https://drive.google.com/file/d/1P2_V0SEAAiAFUYLdcX4wmKENbdHYLLaB/view?usp=sharing"
+              href="https://drive.google.com/file/d/1B_SUzyxYlfLNFyxFPnwc1sdiEooLr6rb/view?usp=sharing"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center space-x-1 rounded-full bg-blue-600 px-4 py-2 text-xs font-semibold text-white hover:bg-blue-700 shadow-md hover:shadow-lg focus:outline-hidden transition-all duration-200"
@@ -162,7 +162,7 @@ export default function Navbar() {
               })}
               <div className="pt-4 px-4">
                 <a
-                  href="https://drive.google.com/file/d/1P2_V0SEAAiAFUYLdcX4wmKENbdHYLLaB/view?usp=sharing"
+                  href="https://drive.google.com/file/d/1B_SUzyxYlfLNFyxFPnwc1sdiEooLr6rb/view?usp=sharing"
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={closeMenu}
