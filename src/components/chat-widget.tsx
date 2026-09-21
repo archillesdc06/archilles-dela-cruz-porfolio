@@ -388,7 +388,7 @@ export default function ChatWidget() {
       `}</style>
 
       {/* ── Floating Chat Button ── */}
-      <div className="fixed bottom-6 right-6 z-50">
+      <div className="fixed bottom-6 right-6 z-50 print:hidden">
         {/* Chat Toggle Button */}
         <button
           id="chat-toggle-btn"

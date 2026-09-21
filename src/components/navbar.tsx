@@ -32,7 +32,7 @@ export default function Navbar() {
   const currentTheme = theme === "system" ? resolvedTheme : theme;
 
   return (
-    <header className="sticky top-0 z-50 w-full glass-nav shadow-xs transition-all duration-300">
+    <header className="sticky top-0 z-50 w-full glass-nav shadow-xs transition-all duration-300 print:hidden">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
