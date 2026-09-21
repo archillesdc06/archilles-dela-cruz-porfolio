@@ -248,7 +248,7 @@ Remember: You are here to help potential employers, clients, and collaborators l
           Authorization: `Bearer ${env.GROQ_API_KEY}`,
         },
         body: JSON.stringify({
-          model: "llama-3.3-70b-versatile",
+          model: "qwen/qwen3.8-27b",
           messages: groqMessages,
           temperature: 0.7,
           max_tokens: 1024,
