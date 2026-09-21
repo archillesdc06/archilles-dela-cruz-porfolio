@@ -4,6 +4,9 @@ import enrichmentData from "~/data/certification-metadata.json";
 
 const FOLDER_ID = process.env.GOOGLE_DRIVE_FOLDER_ID;
 
+const RESUME_FILE_ID = "1B_SUzyxYlfLNFyxFPnwc1sdiEooLr6rb";
+const RESUME_CV_PATTERN = /(^|[^a-z])cv([^a-z]|$)|resume|curriculum[\s_-]*vitae/i;
+
 interface DriveFile {
   id: string;
   name: string;
@@ -79,6 +82,9 @@ async function fetchCertifications(): Promise<Certification[]> {
     const files = await fetchDriveFiles();
 
     return files
+      .filter(
+        (file) => file.id !== RESUME_FILE_ID && !RESUME_CV_PATTERN.test(file.name),
+      )
       .map(fileToCertification)
       .sort((a, b) => b.year.localeCompare(a.year));
   } catch (error) {
