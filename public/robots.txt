@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://archilles-dela-cruz-portfolio.vercel.app/sitemap.xml
+Sitemap: https://archilles-d-dela-cruz-2.vercel.app/sitemap.xml

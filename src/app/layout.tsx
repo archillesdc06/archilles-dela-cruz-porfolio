@@ -21,7 +21,7 @@ const outfit = Outfit({
 export const metadata: Metadata = {
   title: "Archilles Dela Cruz | Software Developer Portfolio",
   description: "Archilles Dela Cruz - Software Developer, Web Developer, IT Staff. View portfolio, projects, certifications, and work experience.",
-  metadataBase: new URL("https://archilles-dela-cruz-portfolio.vercel.app"), // Fallback base URL for metadata
+  metadataBase: new URL("https://archilles-d-dela-cruz-2.vercel.app"), // Fallback base URL for metadata
   icons: [{ rel: "icon", url: "/images/profile-avatar.jpg" }],
   keywords: [
     "Archilles Dela Cruz",
@@ -36,7 +36,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_PH",
-    url: "https://archilles-dela-cruz-portfolio.vercel.app",
+    url: "https://archilles-d-dela-cruz-2.vercel.app",
     title: "Archilles Dela Cruz | Software Developer Portfolio",
     description: "Archilles Dela Cruz - Software Developer, Web Developer, IT Staff. View portfolio, projects, certifications, and work experience.",
     siteName: "Archilles Dela Cruz Portfolio",

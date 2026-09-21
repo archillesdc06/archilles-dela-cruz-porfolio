@@ -515,7 +515,7 @@ export default async function Home() {
               "@type": "Person",
               "name": "Archilles Dela Cruz",
               "jobTitle": ["Software Developer", "Web Developer", "IT Specialist"],
-              "url": "https://archilles-dela-cruz-portfolio.vercel.app",
+              "url": "https://archilles-d-dela-cruz-2.vercel.app",
               "sameAs": [
                 "https://github.com/archillesdc06",
                 "https://facebook.com/archillesdc",
