@@ -67,8 +67,8 @@ export default function CookieBanner() {
                 <Cookie className="h-4 w-4" />
               </div>
               <p className="text-sm leading-relaxed text-slate-600 dark:text-slate-400">
-                Gumagamit ako ng cookies para mapabuti ang iyong karanasan sa site at
-                ma-analyze ang traffic. Basahin ang aking{" "}
+                I use cookies to improve your experience on this site and analyze
+                traffic. Read my{" "}
                 <Link
                   href="/privacy-policy"
                   className="font-medium text-blue-600 hover:underline dark:text-blue-400"
