@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Printer, Mail, Phone, MapPin, Calendar } from "lucide-react";
+import { Download, Mail, Phone, MapPin, Calendar } from "lucide-react";
 import { Github } from "~/components/brand-icons";
 
 interface Experience {
@@ -30,25 +30,21 @@ interface ResumeClientProps {
 }
 
 export default function ResumeClient({ experiences, achievements }: ResumeClientProps) {
-  const handlePrint = () => {
-    window.print();
-  };
-
-
-
   return (
     <div className="space-y-8 print:space-y-0 print:p-0">
       
       {/* Action Buttons (Hidden when printing) */}
       <div className="flex flex-wrap justify-center gap-4 print:hidden">
-        <button
-          onClick={handlePrint}
-          className="flex items-center space-x-2 rounded-xl border border-slate-300 bg-white px-6 py-3 text-sm font-semibold text-slate-700 shadow-xs hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800 transition-all duration-200 cursor-pointer"
+        <a
+          href="https://drive.google.com/uc?export=download&id=1B_SUzyxYlfLNFyxFPnwc1sdiEooLr6rb"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center space-x-2 rounded-xl bg-blue-600 px-6 py-3 text-sm font-semibold text-white shadow-md hover:bg-blue-700 hover:shadow-lg transition-all duration-200 cursor-pointer"
         >
-          <Printer className="h-4 w-4" />
-          <span>Print / Export PDF</span>
-        </button>
-        
+          <Download className="h-4 w-4" />
+          <span>Download Resume PDF</span>
+        </a>
+
         <a
           href="mailto:archillesdelacruzemail@gmail.com?subject=Inquiry regarding Resume"
           className="flex items-center space-x-2 rounded-xl border border-slate-300 bg-white px-6 py-3 text-sm font-semibold text-slate-700 shadow-xs hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800 transition-all duration-200"
