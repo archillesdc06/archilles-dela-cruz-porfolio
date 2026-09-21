@@ -14,7 +14,7 @@ ABOUT ARCHILLES DELA CRUZ:
 - GitHub: https://github.com/archillesdc06
 - Facebook: https://facebook.com/archillesdc
 - JobStreet: https://ph.jobstreet.com/profiles/archilles-delacruz-c1fvrLpmB4
-- Resume/CV: https://drive.google.com/file/d/1P2_V0SEAAiAFUYLdcX4wmKENbdHYLLaB/view?usp=sharing
+- Resume/CV: https://drive.google.com/file/d/1B_SUzyxYlfLNFyxFPnwc1sdiEooLr6rb/view?usp=sharing
 
 EDUCATION:
 1. Bachelor of Science in Information Technology - Major in Business Analytics
@@ -231,9 +231,8 @@ TONE & PERSONALITY:
 Remember: You are here to help potential employers, clients, and collaborators learn about Archilles and connect with him!`;
 
     if (!env.GROQ_API_KEY) {
-      // Return a placeholder response when no API key is set yet
       return NextResponse.json({
-        message: "Hi! I'm Archilles' AI assistant. The Groq API key hasn't been configured yet. Please add your GROQ_API_KEY to the .env file to activate me! 🤖",
+        message: "Hi! I'm Archilles' AI assistant. I'm briefly unavailable right now — but you can reach Archilles anytime at archillesdelacruzemail@gmail.com or via the Contact page. 😊",
       });
     }
 
