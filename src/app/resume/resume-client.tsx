@@ -241,6 +241,17 @@ export default function ResumeClient({ experiences, achievements }: ResumeClient
                 </div>
                 <div>
                   <h3 className="font-bold text-slate-900 dark:text-white print:text-black">
+                    Emmanuel C Awayan
+                  </h3>
+                  <p className="text-slate-500 dark:text-slate-400 print:text-slate-600">
+                    Division Chief - Office of the Building Official
+                  </p>
+                  <p className="font-medium text-slate-600 dark:text-slate-400 print:text-slate-700">
+                    09235556878
+                  </p>
+                </div>
+                <div>
+                  <h3 className="font-bold text-slate-900 dark:text-white print:text-black">
                     Angelica Carino
                   </h3>
                   <p className="text-slate-500 dark:text-slate-400 print:text-slate-600">
