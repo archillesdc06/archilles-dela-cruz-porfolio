@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Printer, Mail, Phone, MapPin, Calendar, FileText } from "lucide-react";
+import { Printer, Mail, Phone, MapPin, Calendar } from "lucide-react";
 import { Github } from "~/components/brand-icons";
 
 interface Experience {
@@ -41,16 +41,6 @@ export default function ResumeClient({ experiences, achievements }: ResumeClient
       
       {/* Action Buttons (Hidden when printing) */}
       <div className="flex flex-wrap justify-center gap-4 print:hidden">
-        <a
-          href="https://drive.google.com/file/d/1P2_V0SEAAiAFUYLdcX4wmKENbdHYLLaB/view?usp=sharing"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex items-center space-x-2 rounded-xl bg-blue-600 px-6 py-3 text-sm font-semibold text-white shadow-md hover:bg-blue-700 hover:shadow-lg transition-all duration-200 cursor-pointer"
-        >
-          <FileText className="h-4 w-4" />
-          <span>View PDF (Google Drive)</span>
-        </a>
-
         <button
           onClick={handlePrint}
           className="flex items-center space-x-2 rounded-xl border border-slate-300 bg-white px-6 py-3 text-sm font-semibold text-slate-700 shadow-xs hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800 transition-all duration-200 cursor-pointer"
@@ -69,7 +59,7 @@ export default function ResumeClient({ experiences, achievements }: ResumeClient
       </div>
 
       {/* Main Resume Sheet */}
-      <div className="mx-auto max-w-5xl rounded-2xl shadow-md p-8 sm:p-12 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 print:border-none print:shadow-none print:bg-white print:text-black print:dark:text-black print:p-0">
+      <div className="mx-auto max-w-5xl rounded-2xl shadow-md p-8 sm:p-12 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 print-sheet print:border-none print:shadow-none print:bg-white print:text-black print:dark:text-black print:p-0">
         
         {/* Resume Header */}
         <div className="text-center border-b border-slate-200 dark:border-slate-800 pb-6 mb-8 print:border-slate-300">

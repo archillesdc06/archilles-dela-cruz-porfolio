@@ -111,3 +111,18 @@
     linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
     linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
 }
+
+/* Print: only the resume sheet card is printed */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  .print-sheet,
+  .print-sheet * {
+    visibility: visible;
+  }
+  .print-sheet {
+    box-shadow: none !important;
+    border-radius: 0;
+  }
+}
