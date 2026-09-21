@@ -65,6 +65,9 @@ export default function Footer() {
             <Link href="/contact" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
               Contact
             </Link>
+            <Link href="/privacy-policy" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+              Privacy
+            </Link>
           </div>
 
           {/* Social Icons & Copyright */}

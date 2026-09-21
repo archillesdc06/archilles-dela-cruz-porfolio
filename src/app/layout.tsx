@@ -7,6 +7,7 @@ import { ThemeProvider } from "~/components/theme-provider";
 import Navbar from "~/components/navbar";
 import Footer from "~/components/footer";
 import ChatWidget from "~/components/chat-widget";
+import CookieBanner from "~/components/cookie-banner";
 
 const geistSans = Geist({
   subsets: ["latin"],
@@ -81,6 +82,7 @@ export default function RootLayout({
               </main>
               <Footer />
               <ChatWidget />
+              <CookieBanner />
             </div>
           </ThemeProvider>
         </TRPCReactProvider>

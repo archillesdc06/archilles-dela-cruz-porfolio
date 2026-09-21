@@ -77,7 +77,7 @@ export default function PrivacyPolicyPage() {
               heading: "Cookies",
               paragraphs: [
                 "This Site may use cookies and similar technologies to remember preferences, analyze traffic, and improve your experience. You can control or disable cookies through your browser settings.",
-                "For full details, please read my ",
+                "When you first visit the Site, a cookie banner lets you accept or decline non-essential cookies. Your choice is stored in your browser and can be changed at any time by clearing your browser storage.",
               ],
             },
             {
