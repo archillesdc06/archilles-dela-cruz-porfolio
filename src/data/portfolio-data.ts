@@ -68,7 +68,7 @@ export const staticExperiences: Experience[] = [
     company: "Office of The Building Official City of General Santos",
     location: "General Santos City, Philippines",
     startDate: "Feb 2026",
-    endDate: "June 2026",
+    endDate: "Present",
     highlights: [
       "Responsible for releasing approved and pending building plans to clients while ensuring proper documentation and tracking of all transactions.",
       "Handled the scanning of architectural and engineering plans, permits, and related items submitted by clients, converting them into softcopy files for digital archiving and record-keeping.",
@@ -93,8 +93,8 @@ export const staticExperiences: Experience[] = [
     role: "Search Engine Optimization (SEO) Support",
     company: "Novice VA Services",
     location: "Remote",
-    startDate: "July 2023",
-    endDate: "Feb 2025",
+    startDate: "Sept 2025",
+    endDate: "Feb 2026",
     highlights: [
       "Optimized website pages and Google Business Profile parity through on-page SEO, keyword research, and content optimization.",
       "Monitored SEO performance using Google Analytics, Search Console, Ahrefs, and Semrush to improve search rankings and visibility.",

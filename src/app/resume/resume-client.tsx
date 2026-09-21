@@ -177,14 +177,18 @@ export default function ResumeClient({ experiences, achievements }: ResumeClient
                 <h3 className="text-xs font-bold text-slate-800 dark:text-slate-200 print:text-black uppercase tracking-wide">
                   Technical Skills
                 </h3>
-                <ul className="list-disc pl-4 text-xs text-slate-600 dark:text-slate-400 space-y-0.5 print:text-slate-700">
+<ul className="list-disc pl-4 text-xs text-slate-600 dark:text-slate-400 space-y-0.5 print:text-slate-700">
+                  <li>Web Developer (Full-Stack Web Application Development)</li>
+                  <li>Next.js &amp; React Development</li>
+                  <li>T3 Full Stack (Next.js, tRPC, Prisma, Tailwind CSS)</li>
+                  <li>TypeScript &amp; JavaScript</li>
                   <li>PHP (Web Development)</li>
                   <li>MYSQL / Database Management</li>
-                  <li>HTML5, CSS3, JavaScript</li>
+                  <li>HTML5, CSS3</li>
                   <li>Basic CRUD System Development</li>
                   <li>System Development using PHP (custom web applications)</li>
                   <li>Basic API Integration</li>
-                  <li>File Handling & Data Management</li>
+                  <li>File Handling &amp; Data Management</li>
                   <li>Microsoft Office (Word, Excel) for documentation and reporting</li>
                 </ul>
               </div>
@@ -280,6 +284,30 @@ export default function ResumeClient({ experiences, achievements }: ResumeClient
                 <ul className="list-disc pl-4 text-xs text-slate-600 dark:text-slate-400 space-y-1 print:text-slate-700">
                   <li>Developed a full-featured web-based dental clinic management system handling patient records, appointment scheduling, treatment tracking, and billing.</li>
                   <li>Designed a streamlined communication interface between dental staff and patients, reducing manual coordination overhead.</li>
+                </ul>
+              </div>
+
+              {/* MediCore POS */}
+              <div className="space-y-1.5">
+                <h3 className="text-xs sm:text-sm font-bold text-slate-950 dark:text-white print:text-black leading-tight">
+                  MediCore POS - Pharmacy Point of Sale &amp; Inventory System | <span className="font-normal text-xs text-blue-600 dark:text-blue-400 print:text-blue-700">Next.js · TypeScript · Tailwind CSS · shadcn/ui · Recharts</span>
+                </h3>
+                <ul className="list-disc pl-4 text-xs text-slate-600 dark:text-slate-400 space-y-1 print:text-slate-700">
+                  <li>Built a premium pharmacy point-of-sale and inventory management system for Philippine community pharmacies with VAT-aware checkout, batch and expiry tracking, and purchase orders.</li>
+                  <li>Implemented role-based access, audit logs, and comprehensive sales, inventory, and supplier reports.</li>
+                  <li>Designed a responsive dashboard with real-time inventory insights and data visualization using Recharts.</li>
+                </ul>
+              </div>
+
+              {/* OBO-PAMS */}
+              <div className="space-y-1.5">
+                <h3 className="text-xs sm:text-sm font-bold text-slate-950 dark:text-white print:text-black leading-tight">
+                  OBO-PAMS - Permit Application Management System | <span className="font-normal text-xs text-blue-600 dark:text-blue-400 print:text-blue-700">PHP 8 · MySQL · JavaScript · Custom CSS</span>
+                </h3>
+                <ul className="list-disc pl-4 text-xs text-slate-600 dark:text-slate-400 space-y-1 print:text-slate-700">
+                  <li>Developed a role-based permit application management system for the Office of the Building Official (LGU-General Santos).</li>
+                  <li>Implemented order-of-payment encoding, permit workflow tracking, approval, releasing records, and on-site ocular inspection checklists.</li>
+                  <li>Added audit logs, reports, team leaders, and user/module access management for full administrative control.</li>
                 </ul>
               </div>
             </div>
