@@ -47,3 +47,5 @@ yarn-error.log*
 
 # prisma generated client (auto-generated, do not commit)
 /generated
+.env*
+!.env.example
