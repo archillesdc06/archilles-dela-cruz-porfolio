@@ -36,7 +36,7 @@ export default function ResumeClient({ experiences, achievements }: ResumeClient
       {/* Action Buttons (Hidden when printing) */}
       <div className="flex flex-wrap justify-center gap-4 print:hidden">
         <a
-          href="https://drive.google.com/uc?export=download&id=1B_SUzyxYlfLNFyxFPnwc1sdiEooLr6rb"
+          href="https://drive.google.com/uc?export=download&id=1pgqUdQ2MrWypLjC0-7X7L4zFioolB-34"
           target="_blank"
           rel="noopener noreferrer"
           className="flex items-center space-x-2 rounded-xl bg-blue-600 px-6 py-3 text-sm font-semibold text-white shadow-md hover:bg-blue-700 hover:shadow-lg transition-all duration-200 cursor-pointer"

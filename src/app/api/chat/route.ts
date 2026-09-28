@@ -14,7 +14,7 @@ ABOUT ARCHILLES DELA CRUZ:
 - GitHub: https://github.com/archillesdc06
 - Facebook: https://facebook.com/archillesdc
 - JobStreet: https://ph.jobstreet.com/profiles/archilles-delacruz-c1fvrLpmB4
-- Resume/CV: https://drive.google.com/file/d/1B_SUzyxYlfLNFyxFPnwc1sdiEooLr6rb/view?usp=sharing
+- Resume/CV: https://drive.google.com/file/d/1pgqUdQ2MrWypLjC0-7X7L4zFioolB-34/view?usp=sharing
 
 EDUCATION:
 1. Bachelor of Science in Information Technology - Major in Business Analytics
