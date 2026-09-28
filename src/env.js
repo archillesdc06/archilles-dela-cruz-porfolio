@@ -16,7 +16,11 @@ export const env = createEnv({
     GROQ_API_KEY: z.string().optional(),
     DIRECT_URL: z.string().optional(),
     GITHUB_USERNAME: z.string().optional(),
+    GITHUB_TOKEN: z.string().optional(),
     GOOGLE_DRIVE_FOLDER_ID: z.string().optional(),
+    AI_ANALYSIS_API_KEY: z.string().optional(),
+    AI_ANALYSIS_BASE_URL: z.string().url().optional(),
+    AI_ANALYSIS_MODEL: z.string().optional(),
   },
 
   /**
@@ -40,7 +44,11 @@ export const env = createEnv({
     GROQ_API_KEY: process.env.GROQ_API_KEY,
     DIRECT_URL: process.env.DIRECT_URL,
     GITHUB_USERNAME: process.env.GITHUB_USERNAME,
+    GITHUB_TOKEN: process.env.GITHUB_TOKEN,
     GOOGLE_DRIVE_FOLDER_ID: process.env.GOOGLE_DRIVE_FOLDER_ID,
+    AI_ANALYSIS_API_KEY: process.env.AI_ANALYSIS_API_KEY,
+    AI_ANALYSIS_BASE_URL: process.env.AI_ANALYSIS_BASE_URL,
+    AI_ANALYSIS_MODEL: process.env.AI_ANALYSIS_MODEL,
     // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
   },
   /**

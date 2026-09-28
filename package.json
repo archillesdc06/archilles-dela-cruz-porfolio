@@ -6,6 +6,10 @@
   "scripts": {
     "build": "prisma generate && next build",
     "check": "next lint && tsc --noEmit",
+    "ai:analyze": "tsx scripts/analyze-ai-drafts.ts",
+    "ai:analyze:certifications": "tsx scripts/analyze-certifications.ts",
+    "ai:analyze:projects": "tsx scripts/analyze-projects.ts",
+    "ai:promote": "tsx scripts/promote-ai-drafts.ts",
     "db:generate": "prisma migrate dev",
     "db:migrate": "prisma migrate deploy",
     "db:push": "prisma db push",
